@@ -1,5 +1,5 @@
 # Kolibri for docker
-Kolibri docker image (Tested on x86_64)
+Kolibri docker image (Tested on x86_64, armv7l)
 ## How to use ?
 
 1. Clone this repository and `cd` to the folder.
