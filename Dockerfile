@@ -1,17 +1,21 @@
-FROM ubuntu:xenial
+FROM alpine:latest
 
 
-#install wget and python
-RUN apt-get update && apt-get install -y \
-    wget \
+#install python
+RUN apk update && apk add \
     python
 
+#no need to add cleaning command as alpine cleans package automatically
+
 #download kolibri
-RUN wget -O kolibri-installer.pex https://learningequality.org/r/kolibri-pex-latest
+RUN wget -O kolibri https://learningequality.org/r/kolibri-pex-latest
 
+#make executable
+RUN chmod +x kolibri
 
-RUN chmod +x kolibri-installer.pex
+#used for storing db and content (used when mounting volume)
+RUN mkdir /root/.kolibri
 
 EXPOSE 8080
 
-CMD ./kolibri-installer.pex start
+CMD ./kolibri start && tail -f /root/.kolibri/server.log
