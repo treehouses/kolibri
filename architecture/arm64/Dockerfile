@@ -1,5 +1,10 @@
-FROM alpine:latest
+FROM alpine@sha256:286be1c7f84de7cbae6cf8aa4e13b3ce2f2512353b3e734336e47e92de4a881e
 
+LABEL maintainer="sahil@sahil.xyz"
+
+COPY bin/ /usr/bin/
+
+RUN [ "cross-build-start" ]
 
 #install python
 RUN apk update && apk add \
@@ -15,6 +20,8 @@ RUN chmod +x kolibri
 
 #used for storing db and content (used when mounting volume)
 RUN mkdir /root/.kolibri
+
+RUN [ "cross-build-end" ]  
 
 EXPOSE 8080
 
