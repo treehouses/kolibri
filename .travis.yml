@@ -2,42 +2,38 @@ sudo: required
 addons:
   apt:
     packages:
-      - docker-ce
+    - docker-ce
 env:
   global:
-    # DOCKER_USER
-    - secure: "HTq2I1Aep9L1uYvIGUVIX0RHbSWo+JiIJ/xnyW76S4oSRUbez+GbnP/YFKcPS+eAeV2YJscuInEWrQJrAv2eezPwv85WrNGRILIEtVw3ApQauyHYrkAChgl0lDCiVIvg/HOnLNe5brR+s9FPSiNvPUq+VACI47aza3he6Up0mNP7cxPhRbwTDXJsS2HXpVcahi5xLkgtiImhUx3q2cD0FlcrLsOkEq4XboPR7mh10xQDRnQC0UagMIcxIgTsu+sI6pOqnRPeAlogU61tQOjQ9C+HHdTGmUeF63qIZ/aSNAyW6Z4DE58xYNVh9cvPqQAfGaWJpBdQF1kmhR1OznxSHg9ePZv1S3UiddtElHv4V96HUPWoSXbLuBEYoOB07ynfYM4ESYFRuEs82gXOG6UfvgJieagEqtgFp9xOKNX8o7w9YGVM9cxGGKvN8Jhu71nC2+AmLZGFT8OttmhZ66qUPKmGPXG7qT6V/NjVmgnpa0tKq1mIlMNPz4nTn4AwP+OzWuFApkTeXSn1tN9S/EK08o7DBw2VX+LpXitIeARdc9isG7N0qEQvvCuikgsgsHEXoKe4Pktckv7nJMAOWkgGMWuWIfHAEshPb/3s50CPofFxtuhdOcwF5dil7ziP9Yz1a632QFGFzem00Yb4q5oxLdVQVOjHHyNaJgQVXj/gf1E="
-    # DOCKER_PASS
-    - secure: "EyK2m4jRo/mITIzTELs6GdTjFqz63rImxua6wXBd5cefMrHead8YyZ5M2nkXauMXu+pccxK/v0YXhG/CrtoIfp2dSbKONfs5viJt2J2dNQ9el1E/30BmEvdCBdTeXfes8PLgrEJVLui3snSSYqpMXkd9w8xqxGtZvmcuz969kHYE2bW+f9Xy4AphxN1Y/dZ1JWWJoW45aQE/zZklaNmQctC+qYTIG3c3rrS8tqHcR0zp+sZ+25bfxEHtLu1iNvUbfsCzmUB9/fcbiqgIfBXTIkoHfGfMUFkToZwGPJHS9vGhmNgdwtcrYv1P3Qc6Nt4mRmJTZn9w7nR2Ry5xSqD39gXxAJKsuTDUdKDy7GDzfI/8Tj3sUYrSW9YeNUa3tCTxzjYBaQ0A7WvPt7LkB+0i3lvRGE+rcAwjwvVJyPbMyeabsgqy9MV9sQ2gGqSlMl1SIHLNYMcuElHhOo09u+Zhicwn2ZTqCq2u0MdmaYWXirM+fS5eDyIHps9Z+onh0ZluwB5OuIlt+qYzOei51BMQLlxB+C/NSmz7G5gK8q+1qKzXoXwUEIKkVHN7qPILp74O9o+OLUTTulqiQ6S/eTueo+TxSz2/u8D/EzRJ4Gv5tK02y1LYH6ibgFex3Oj+IlMMZDSh5Ds4PsYqP52Hn6GLywtjO79Z7ep3So6a9PbcOSE="
-
+  - secure: Ml6UKLBrCEsSYOow1HbuxkV5VgCUqQUAXp0cMPqeMASAJdF/4yEFqw4IkLzZWoIXPn09bZ+F3XAUICR6V9ZDvetg0tANZVAHaGWUK4GfpvmNp+v3WAmMhxhRXfkiO0M4/CeHdezxK/qWkn1bOiNsFfNdBLb3GulsxjrwQzrEgN/UCSlzeSRxKMWsfOiXOznjSfffasO8yxFP25wDywQ5lKxRSPrDJC/UHXmHBwep/gILuGRCaUu1lcHqNiVgPvxeTHQHQobe0+1k9pgps3Eo8h7Tul3CuB8PTUz4wJ62+7sgKw8jFpKHC/Mbez7M5MeuqwAnjuOmYI27xwtrl4oDrQb5ybKCbplQSBS4Qvtjhvo8iIGeqtgWy7dT/vUNGcfSsCU/AuhvLIChq/mCTjNt8XnvhvJhXBrFhWjAGruIvK7ar49Ibg1DDKTv5N0uDtOic62QQNTbGVn5zk9zywsosVtVUXIo8/o6BUiuAS8tX5rHWBWc8so/loBH2VzA0QjYHuOG0lZHXwzf6s3pSCB/1avUpg6xZiYjILqo6a7XVo5/zv2zjkzD1M3s62bp+MJxVMrfWq9jRkIChmVnj2k90t/aVFtBZkCSi/qa9q32uhdNSfh8gxA1zQUpQ9Ya2s7rR3SOc8Cr4vH6pDlK3/XEj7ok+FG7HkG25wt2QpRx6FI=
+  - secure: uoetBmE/TBr6HpnNf/M7zXz9bfus9sCiArnvxWfS89C28XIZxz0gFEz+5Ck8CdDz5C2EBlHvOY4D8ZvtQgmjEP0UBNkeiHrtl0Mn72IX7o6rrakUnJawbMQcYfC7B/wE9bNWAumCnuTnW5+lbN0/slf8B0elXHJ0/UE7PzuVZ9nv7aECkMJFsuDaLDjUrVri1DqGTpGBpx3TAyfayaASO0iZYHl5PPGo3r6S+rX2Qp9kVztQyJ6QvjcMbdue2cP6KRI4K9HgKhQpT3zWzmckbw1TlOqEEaugnTLOwBrLTX0se6k87A83n4stVF2e4ExcAhVIQE2RCoDuwMFuRK8ieJJFzMMuMXnGBnVR+hnLBdRx6IjG7oClh8Nh1CN3+L665ulLceYZVAjsVXOK3iJE6RHK3sS4g0e1T6L9ThnIgSCPZjwIrSki7tdx0LH1UlL8WghulhYWsWdpbz6Fs4CcSUW43+2s2V42MaeuQjPLqNUoDFph+xhDwptn1s+xCnf71qUdi5NtwEmzv4a+rrpXxc6coFEH5phK5DixTXHYa+ZSKkuFLD+v+qD1qG4d8AzKy5lVd0obXHjowhh1YA/GzPgrgEqMV/0u7Ha7kRDXLF+W5QK+nZCC8184ONmZ/KB4JNbi5yShLIGjRNG1NfqRJSQnjiorTn2cEu6ZuTy+c+w=
 stages:
-  - docker-creation
-  - multiarch-release
-
+- docker-creation
+- multiarch-release
 jobs:
   include:
-    - stage: docker-creation
-      script:
-        - set -e
-        - source ./.travis/travis_utils.sh
-        - prepare_everything
-        - deploy_docker './docker/amd64-Dockerfile' $KOLIBRI_AMD64 $KOLIBRI_AMD64_LATEST
-    - stage: docker-creation
-      script:
-        - set -e
-        - source ./.travis/travis_utils.sh
-        - prepare_everything
-        - deploy_docker './docker/aarch64-Dockerfile' $KOLIBRI_AARCH64 $KOLIBRI_AARCH64_LATEST
-    - stage: docker-creation
-      script:
-        - set -e
-        - source ./.travis/travis_utils.sh
-        - prepare_everything
-        - deploy_docker './docker/arm-Dockerfile' $KOLIBRI_ARM $KOLIBRI_ARM_LATEST
-    - stage: multiarch-release
-      script: #Pushing multiarch
-        - set -e
-        - source ./.travis/travis_utils.sh
-        - prepare_everything
-        - create_multiarch_manifest_planet $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_AARCH64_LATEST
-        - push_multiarch_manifests
+  - stage: docker-creation
+    script:
+    - set -e
+    - source ./.travis/travis_utils.sh
+    - prepare_everything
+    - deploy_docker './docker/amd64-Dockerfile' $KOLIBRI_AMD64 $KOLIBRI_AMD64_LATEST
+  - stage: docker-creation
+    script:
+    - set -e
+    - source ./.travis/travis_utils.sh
+    - prepare_everything
+    - deploy_docker './docker/aarch64-Dockerfile' $KOLIBRI_AARCH64 $KOLIBRI_AARCH64_LATEST
+  - stage: docker-creation
+    script:
+    - set -e
+    - source ./.travis/travis_utils.sh
+    - prepare_everything
+    - deploy_docker './docker/arm-Dockerfile' $KOLIBRI_ARM $KOLIBRI_ARM_LATEST
+  - stage: multiarch-release
+    script:
+    - set -e
+    - source ./.travis/travis_utils.sh
+    - prepare_everything
+    - create_multiarch_manifest_planet $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_AARCH64_LATEST
+    - push_multiarch_manifests

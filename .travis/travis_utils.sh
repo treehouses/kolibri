@@ -10,7 +10,7 @@ build_message(){
 }
 
 login_docker(){
-  echo $DOCKER_PASS | docker login -u $DOCKER_USER -p -
+  docker login -u $DOCKER_USER -p $DOCKER_PASS
 }
 
 prepare_ci(){
