@@ -34,8 +34,8 @@ jobs:
         - source ./.travis/travis_utils.sh
         - prepare_everything
         - deploy_docker './docker/arm-Dockerfile' $KOLIBRI_ARM $KOLIBRI_ARM_LATEST
-     - stage: multiarch-release
-       script: #Pushing multiarch
+    - stage: multiarch-release
+      script: #Pushing multiarch
         - set -e
         - source ./.travis/travis_utils.sh
         - prepare_everything
