@@ -1,1 +1,4 @@
 sudo: enabled
+
+script:
+- exit 0
