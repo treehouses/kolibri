@@ -1,6 +1,5 @@
 FROM alpine:latest
 
-
 #install python
 RUN apk update && apk add \
     python

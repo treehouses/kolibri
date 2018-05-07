@@ -1,0 +1,43 @@
+sudo: required
+addons:
+  apt:
+    packages:
+      - docker-ce
+env:
+  global:
+    # DOCKER_USER
+    - secure: "HTq2I1Aep9L1uYvIGUVIX0RHbSWo+JiIJ/xnyW76S4oSRUbez+GbnP/YFKcPS+eAeV2YJscuInEWrQJrAv2eezPwv85WrNGRILIEtVw3ApQauyHYrkAChgl0lDCiVIvg/HOnLNe5brR+s9FPSiNvPUq+VACI47aza3he6Up0mNP7cxPhRbwTDXJsS2HXpVcahi5xLkgtiImhUx3q2cD0FlcrLsOkEq4XboPR7mh10xQDRnQC0UagMIcxIgTsu+sI6pOqnRPeAlogU61tQOjQ9C+HHdTGmUeF63qIZ/aSNAyW6Z4DE58xYNVh9cvPqQAfGaWJpBdQF1kmhR1OznxSHg9ePZv1S3UiddtElHv4V96HUPWoSXbLuBEYoOB07ynfYM4ESYFRuEs82gXOG6UfvgJieagEqtgFp9xOKNX8o7w9YGVM9cxGGKvN8Jhu71nC2+AmLZGFT8OttmhZ66qUPKmGPXG7qT6V/NjVmgnpa0tKq1mIlMNPz4nTn4AwP+OzWuFApkTeXSn1tN9S/EK08o7DBw2VX+LpXitIeARdc9isG7N0qEQvvCuikgsgsHEXoKe4Pktckv7nJMAOWkgGMWuWIfHAEshPb/3s50CPofFxtuhdOcwF5dil7ziP9Yz1a632QFGFzem00Yb4q5oxLdVQVOjHHyNaJgQVXj/gf1E="
+    # DOCKER_PASS
+    - secure: "EyK2m4jRo/mITIzTELs6GdTjFqz63rImxua6wXBd5cefMrHead8YyZ5M2nkXauMXu+pccxK/v0YXhG/CrtoIfp2dSbKONfs5viJt2J2dNQ9el1E/30BmEvdCBdTeXfes8PLgrEJVLui3snSSYqpMXkd9w8xqxGtZvmcuz969kHYE2bW+f9Xy4AphxN1Y/dZ1JWWJoW45aQE/zZklaNmQctC+qYTIG3c3rrS8tqHcR0zp+sZ+25bfxEHtLu1iNvUbfsCzmUB9/fcbiqgIfBXTIkoHfGfMUFkToZwGPJHS9vGhmNgdwtcrYv1P3Qc6Nt4mRmJTZn9w7nR2Ry5xSqD39gXxAJKsuTDUdKDy7GDzfI/8Tj3sUYrSW9YeNUa3tCTxzjYBaQ0A7WvPt7LkB+0i3lvRGE+rcAwjwvVJyPbMyeabsgqy9MV9sQ2gGqSlMl1SIHLNYMcuElHhOo09u+Zhicwn2ZTqCq2u0MdmaYWXirM+fS5eDyIHps9Z+onh0ZluwB5OuIlt+qYzOei51BMQLlxB+C/NSmz7G5gK8q+1qKzXoXwUEIKkVHN7qPILp74O9o+OLUTTulqiQ6S/eTueo+TxSz2/u8D/EzRJ4Gv5tK02y1LYH6ibgFex3Oj+IlMMZDSh5Ds4PsYqP52Hn6GLywtjO79Z7ep3So6a9PbcOSE="
+
+stages:
+  - docker-creation
+  - multiarch-release
+
+jobs:
+  include:
+    - stage: docker-creation
+      script:
+        - set -e
+        - source ./.travis/travis_utils.sh
+        - prepare_everything
+        - deploy_docker './docker/amd64-Dockerfile' $KOLIBRI_AMD64 $KOLIBRI_AMD64_LATEST
+    - stage: docker-creation
+      script:
+        - set -e
+        - source ./.travis/travis_utils.sh
+        - prepare_everything
+        - deploy_docker './docker/aarch64-Dockerfile' $KOLIBRI_AARCH64 $KOLIBRI_AARCH64_LATEST
+    - stage: docker-creation
+      script:
+        - set -e
+        - source ./.travis/travis_utils.sh
+        - prepare_everything
+        - deploy_docker './docker/arm-Dockerfile' $KOLIBRI_ARM $KOLIBRI_ARM_LATEST
+     - stage: multiarch-release
+       script: #Pushing multiarch
+        - set -e
+        - source ./.travis/travis_utils.sh
+        - prepare_everything
+        - create_multiarch_manifest_planet $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_AARCH64_LATEST
+        - push_multiarch_manifests
