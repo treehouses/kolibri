@@ -1,5 +1,6 @@
 FROM alpine:latest
 
+LABEL maintainer="sahil@sahil.xyz"
 
 #install python
 RUN apk update && apk add \
