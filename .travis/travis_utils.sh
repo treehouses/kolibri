@@ -10,7 +10,7 @@ build_message(){
 }
 
 login_docker(){
-  docker login --username=$dXc4bijZcTzHaR4PVPJpgiOs --password=$TrcmOyHLDOznaYBdypu4
+  docker login --username=$DOCKER_USER --password=$DOCKER_PASS
 }
 
 prepare_ci(){
