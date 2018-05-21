@@ -1,6 +1,7 @@
 sudo: required
 addons:
   apt:
+    update: true
     packages:
     - docker-ce
 stages:
