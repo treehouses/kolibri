@@ -1,4 +1,4 @@
-FROM arm64v8/alpine:latest
+FROM multiarch/alpine:aarch64-latest-stable
 
 #install python
 RUN apk update && apk add \
