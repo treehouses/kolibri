@@ -17,19 +17,21 @@ jobs:
     - deploy_docker './docker/amd64-Dockerfile' $KOLIBRI_AMD64 $KOLIBRI_AMD64_LATEST
   - stage: docker-creation
     # For AARCH64 (ARM 64)
+    before_script:
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     script:
     - set -e
     - source ./.travis/travis_utils.sh
     - prepare_everything
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - deploy_docker './docker/aarch64-Dockerfile' $KOLIBRI_AARCH64 $KOLIBRI_AARCH64_LATEST
   - stage: docker-creation
     # For ARM
+    before_script:
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     script:
     - set -e
     - source ./.travis/travis_utils.sh
     - prepare_everything
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     - deploy_docker './docker/arm-Dockerfile' $KOLIBRI_ARM $KOLIBRI_ARM_LATEST
   - stage: multiarch-release
     script:
