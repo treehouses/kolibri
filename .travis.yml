@@ -38,7 +38,7 @@ jobs:
     - set -e
     - source ./.travis/travis_utils.sh
     - prepare_everything
-    - create_multiarch_manifest_planet $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_AARCH64_LATEST
+    - create_multiarch_manifest_kolibri $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_AARCH64_LATEST
     - push_multiarch_manifests
 env:
   global:
