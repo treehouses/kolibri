@@ -24,7 +24,7 @@ jobs:
     - set -e
     - source ./.travis/travis_utils.sh
     - prepare_everything
-    - deploy_docker './docker/arm64-Dockerfile' $KOLIBRI_arm64 $KOLIBRI_arm64_LATEST
+    - deploy_docker './docker/arm64-Dockerfile' $KOLIBRI_ARM64 $KOLIBRI_ARM64_LATEST
   - stage: docker-creation
     # For ARM
     before_script:
@@ -40,7 +40,7 @@ jobs:
     - source ./.travis/travis_utils.sh
     - prepare_everything
     - login_docker
-    - create_multiarch_manifest_kolibri $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_arm64_LATEST
+    - create_multiarch_manifest_kolibri $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_ARM64_LATEST
     - push_multiarch_manifests
 env:
   global:

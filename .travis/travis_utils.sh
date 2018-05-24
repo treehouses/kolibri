@@ -47,8 +47,8 @@ prepare_kolibri_arm(){
 
 prepare_kolibri_arm64(){
   build_message prepare Kolibri arm64 docker...
-  KOLIBRI_arm64=$DOCKER_ORG/$DOCKER_REPO:arm64-$BRANCH-$COMMIT
-  KOLIBRI_arm64_LATEST=$DOCKER_ORG/$DOCKER_REPO:arm64-latest
+  KOLIBRI_ARM64=$DOCKER_ORG/$DOCKER_REPO:arm64-$BRANCH-$COMMIT
+  KOLIBRI_ARM64_LATEST=$DOCKER_ORG/$DOCKER_REPO:arm64-latest
 }
 
 prepare_multiarch_manifest_tool(){
