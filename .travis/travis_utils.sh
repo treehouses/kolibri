@@ -45,10 +45,10 @@ prepare_kolibri_arm(){
 }
 
 
-prepare_kolibri_aarch64(){
-  build_message prepare Kolibri aarch64 docker...
-  KOLIBRI_AARCH64=$DOCKER_ORG/$DOCKER_REPO:aarch64-$BRANCH-$COMMIT
-  KOLIBRI_AARCH64_LATEST=$DOCKER_ORG/$DOCKER_REPO:aarch64-latest
+prepare_kolibri_arm64(){
+  build_message prepare Kolibri arm64 docker...
+  KOLIBRI_arm64=$DOCKER_ORG/$DOCKER_REPO:arm64-$BRANCH-$COMMIT
+  KOLIBRI_arm64_LATEST=$DOCKER_ORG/$DOCKER_REPO:arm64-latest
 }
 
 prepare_multiarch_manifest_tool(){
@@ -68,7 +68,7 @@ prepare_everything(){
   prepare_ci
   prepare_kolibri_amd64
   prepare_kolibri_arm
-  prepare_kolibri_aarch64
+  prepare_kolibri_arm64
   prepare_multiarch_manifest_tool
   prepare_yq
 }
@@ -138,7 +138,7 @@ create_multiarch_manifest_kolibri(){
     then
         # $1: latest arm
         # $2: latest amd64   
-        # $3: latest aarch64 (arm64)
+        # $3: latest arm64
         yq n image treehouses/kolibri:latest | \
         yq w - manifests[0].image $1 | \
         yq w - manifests[0].platform.architecture arm | \
