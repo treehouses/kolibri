@@ -80,7 +80,7 @@ package_docker(){
   build_message processing $2
   nohup bell &
   docker build -f $1 -t $2 .
-  if [ "$BRANCH" = "master" ]
+  if [ "$BRANCH" = "kolibri-travis-build3" ]
 	then
 		tag_a_docker $2 $3
 	fi
@@ -90,7 +90,7 @@ push_docker(){
   # $1: tag
   # $2: tag latest
   push_a_docker $1
-	if [ "$BRANCH" = "master" ]
+	if [ "$BRANCH" = "kolibri-travis-build3" ]
 	then
 	  push_a_docker $2
 	fi
@@ -100,7 +100,7 @@ tag_docker(){
   # $1: tag old
   # $2: tag new
   tag_a_docker $1 $2
-	if [ "$BRANCH" = "master" ]
+	if [ "$BRANCH" = "kolibri-travis-build3" ]
 	then
 	  tag_a_docker $1 $3
 	fi
@@ -110,7 +110,7 @@ delete_docker(){
   # $1: tag
   # $2: tag latest
 	docker rmi -f $1
-	if [ "$BRANCH" = "master" ]
+	if [ "$BRANCH" = "kolibri-travis-build3" ]
 	then
 		docker rmi -f $2
   fi
@@ -134,7 +134,7 @@ bell() {
 
 create_multiarch_manifest_kolibri(){
     build_message Creating Kolibri Multiarch Manifests
-    if [ "$BRANCH" = "master" ]
+    if [ "$BRANCH" = "kolibri-travis-build3" ]
     then
         # $1: latest arm
         # $2: latest amd64   
@@ -157,7 +157,7 @@ create_multiarch_manifest_kolibri(){
 
 push_multiarch_manifests(){
     build_message Pushing Multiarch Manifests to cloud
-    if [ "$BRANCH" = "master" ]
+    if [ "$BRANCH" = "kolibri-travis-build3" ]
     then
         manifest_tool push from-spec /tmp/MA_manifests/MA_kolibri_latest.yaml
         build_message Successfully Pushed Multiarch Manifests to cloud
