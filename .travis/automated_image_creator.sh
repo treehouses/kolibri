@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Examples:
-# ./automated_image_creator.sh -o midtrans -r base -a debian -p ./base_debian
+# ./automated_image_creator.sh -o ole -r base -a debian -p ./base_debian
 while getopts "o:r:a:p:f:" option; do
   case "$option" in
     o) DOCKER_ORG=${OPTARG};;
