@@ -8,7 +8,7 @@ RUN apk update && apk add \
 #no need to add cleaning command as alpine cleans package automatically
 
 #download kolibri
-RUN curl -o kolibri -L https://learningequality.org/r/kolibri-pex-latest
+RUN curl -o kolibri -L https://github.com/learningequality/kolibri/releases/download/v0.10.3/kolibri-0.10.3.pex
 
 #make executable
 RUN chmod +x kolibri
