@@ -12,36 +12,28 @@ jobs:
   - stage: docker-creation
     # For AMD64
     script:
-    - set -e
-    - source ./.travis/travis_utils.sh
-    - prepare_everything
-    - deploy_docker './docker/amd64-Dockerfile' $KOLIBRI_AMD64 $KOLIBRI_AMD64_LATEST
+    - ./.travis/automated_image_creator.sh -o treehouses -r kolibri-tags -a 'amd64-0.10.3' -f amd64-Dockerfile -p ./docker
   - stage: docker-creation
     # For arm64
     before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     script:
-    - set -e
-    - source ./.travis/travis_utils.sh
-    - prepare_everything
-    - deploy_docker './docker/arm64-Dockerfile' $KOLIBRI_ARM64 $KOLIBRI_ARM64_LATEST
+    - ./.travis/automated_image_creator.sh -o treehouses -r kolibri-tags -a 'arm64-0.10.3' -f arm64-Dockerfile -p ./docker
   - stage: docker-creation
     # For ARM
     before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
     script:
-    - set -e
-    - source ./.travis/travis_utils.sh
-    - prepare_everything
-    - deploy_docker './docker/arm-Dockerfile' $KOLIBRI_ARM $KOLIBRI_ARM_LATEST
+    - ./.travis/automated_image_creator.sh -o treehouses -r kolibri-tags -a 'arm-0.10.3' -f arm-Dockerfile -p ./docker
   - stage: multiarch-release
     script:
-    - set -e
-    - source ./.travis/travis_utils.sh
-    - prepare_everything
-    - login_docker
-    - create_multiarch_manifest_kolibri $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_ARM64_LATEST
-    - push_multiarch_manifests
+     - echo do nothing
+#    - set -e
+#    - source ./.travis/travis_utils.sh
+#    - prepare_everything
+#    - login_docker
+#    - create_multiarch_manifest_kolibri $KOLIBRI_ARM_LATEST $KOLIBRI_AMD64_LATEST $KOLIBRI_ARM64_LATEST
+#    - push_multiarch_manifests
 env:
   global:
   - secure: Hoh9KJs7k0K07NLHAGyvK8s28IH0KwAfITPLOlDzMwsb5x86orGBZ2H+3S9rq0JILoMyUEpbko6/oPmpk5S9OC9/0mWNWecSs3K6UklydAJKDLQc2n5JOKPoAhqkuY6J04IsLdcyQ+FAt3m6sMf4WwUI/6h4nJukT79pBIBqtLWIVIT6ss+P/XAHMsQce3cHf+/hPCH5A8ApQKUT+VDrMs6cS9gIJXBMGjml/7aRO+OTwxhFV6Nb19Z0DpcZ7blPMP+af9g+53NjkYJs8yxFziB5yD0iwU2Sv9RR9TsbYg9SlK7Ltd5K9ESEYTTk02wXjdX0HogUpxCCcfflkIFnmjsVyawWppYwoZG2PjGswfg9wqj78i46vI/ZkxSBZoKhPwLOEssgCRj6AUoWYYLHbw3LqEuuA8fzohrV6gnXWB6J+jIedJyaXkLNWFeSfXPIjIUiLK4WWsA96lFFhDUPcRqblP5581CJ3iMGpoYUFdcyrERZ0/gZJyOXMdE+S/SG3SiRPypEIlZFObn+L6j4d5C4ojzrYIiy40CH5pQ89j1tsBdG+3zv00e71/EJudvA/cwv/GrzL5tMPOJH5oASgz4Ugx8eYUvLDeWCqkBCFuYNTv0NVcAJx1eiaJ61V76qj4RtqcjMfFeeLA9h5Y4vFMFISEIW+asWVfJIQz9n8As=
