@@ -96,7 +96,7 @@ delete_image() {
 }
 
 main() {
-    local BRANCH="$CI_COMMIT_REF_NAME"
+    local BRANCH=$(git rev-parse --abbrev-ref HEAD)
     local COMMIT=$(git rev-parse --short HEAD)
     local IMAGE_GLOBAL_VERSION=$(cat package.json | grep version | awk '{print$2}' | awk '{print substr($0, 2, length($0) - 3)}')
 
