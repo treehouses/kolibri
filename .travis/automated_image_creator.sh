@@ -96,7 +96,7 @@ delete_image() {
 }
 
 main() {
-    local BRANCH=${TRAVIS_CURRENT_BRANCH}
+    local BRANCH=$(if [ ${TRAVIS_PULL_REQUEST} == "false" ]; then echo ${TRAVIS_BRANCH}; else echo ${TRAVIS_PULL_REQUEST_BRANCH}; fi)
     local COMMIT=$(git rev-parse --short HEAD)
 
     if [[ ! -z ${IMAGE_ALIAS} ]]; then
