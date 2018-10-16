@@ -12,15 +12,6 @@ while getopts "o:r:a:p:f:" option; do
   esac
 done
 
-echo() {
-    # $1 = build message
-    echo
-    echo =========BUILD MESSAGE=========
-    echo "$@"
-    echo ===============================
-    echo
-}
-
 login_docker() {
     if [[ -z "$DOCKER_USER" ]] || [[ -z "$DOCKER_PASS" ]]; then
         echo 'Either DOCKER_USER or DOCKER_PASS environment variable does not exist, please set it up in pipeline setting!'
