@@ -12,7 +12,7 @@ while getopts "o:r:a:p:f:" option; do
   esac
 done
 
-build_message() {
+echo() {
     # $1 = build message
     echo
     echo =========BUILD MESSAGE=========
@@ -23,7 +23,7 @@ build_message() {
 
 login_docker() {
     if [[ -z "$DOCKER_USER" ]] || [[ -z "$DOCKER_PASS" ]]; then
-        build_message 'Either DOCKER_USER or DOCKER_PASS environment variable does not exist, please set it up in pipeline setting!'
+        echo 'Either DOCKER_USER or DOCKER_PASS environment variable does not exist, please set it up in pipeline setting!'
         exit 1
     fi
     docker login --username="$DOCKER_USER" --password="$DOCKER_PASS"
@@ -37,7 +37,7 @@ fallback_env() {
     echo "${CURRENT_VALUE}"
 
     if [[ -z "$CURRENT_VALUE" ]]; then
-        build_message "${TARGET_VARIABLE} is not set and will defaulting to ${FALLBACK_VALUE}"
+        echo "${TARGET_VARIABLE} is not set and will defaulting to ${FALLBACK_VALUE}"
         eval "export ${TARGET_VARIABLE}=${FALLBACK_VALUE}"
     fi
 }
@@ -48,18 +48,18 @@ package_image() {
     local IMAGE_NAME_LATEST=${3}
 
     echo "== Packing image"
-    build_message processing ${IMAGE_NAME}
+    echo processing ${IMAGE_NAME}
     if [ ! -z ${IMAGE_DOCKERFILE} ]; then
         docker build -t ${IMAGE_NAME} -f ${IMAGE_BUILD_TARGET_PATH}/${IMAGE_DOCKERFILE} ${IMAGE_BUILD_TARGET_PATH} || exit 1
     else
         docker build -t ${IMAGE_NAME} ${IMAGE_BUILD_TARGET_PATH} || exit 1
     fi
-    build_message done processing ${IMAGE_NAME}
+    echo done processing ${IMAGE_NAME}
     if [ ${BRANCH} = "master" ]
     then
-        build_message processing ${IMAGE_NAME_LATEST}
+        echo processing ${IMAGE_NAME_LATEST}
         docker tag ${IMAGE_NAME} ${IMAGE_NAME_LATEST}
-        build_message done processing ${IMAGE_NAME_LATEST}
+        echo done processing ${IMAGE_NAME_LATEST}
     fi
 }
 
@@ -69,13 +69,13 @@ push_image() {
     local IMAGE_NAME_LATEST=${3}
 
     echo "== Pushing image"
-    build_message processing ${IMAGE_NAME}
+    echo processing ${IMAGE_NAME}
     docker push ${IMAGE_NAME}
-    build_message done processing ${IMAGE_NAME}
+    echo done processing ${IMAGE_NAME}
     if [ ${BRANCH} = "master" ]; then
-        build_message processing ${IMAGE_NAME_LATEST}
+        echo processing ${IMAGE_NAME_LATEST}
         docker push ${IMAGE_NAME_LATEST}
-        build_message done processing ${IMAGE_NAME_LATEST}
+        echo done processing ${IMAGE_NAME_LATEST}
     fi
 }
 
@@ -85,13 +85,13 @@ delete_image() {
     local IMAGE_NAME_LATEST=${3}
 
     echo "== Deleting image"
-    build_message processing ${IMAGE_NAME}
+    echo processing ${IMAGE_NAME}
     docker rmi -f ${IMAGE_NAME}
-    build_message done processing ${IMAGE_NAME}
+    echo done processing ${IMAGE_NAME}
     if [ ${BRANCH} = "master" ]; then
-        build_message processing ${IMAGE_NAME_LATEST}
+        echo processing ${IMAGE_NAME_LATEST}
         docker rmi -f ${IMAGE_NAME_LATEST}
-        build_message done processing ${IMAGE_NAME_LATEST}
+        echo done processing ${IMAGE_NAME_LATEST}
     fi
 }
 

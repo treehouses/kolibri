@@ -19,7 +19,7 @@ create_multiarch_manifest(){
     local ARM_IMAGE=${2}
     local AMD64_IMAGE=${3}
     local ARM64_IMAGE=${4}
-    build_message Creating multiarch manifest
+    echo Creating multiarch manifest
     {
         yq n image ${TARGET_IMAGE} | \
         yq w - manifests[0].image ${ARM_IMAGE} | \
@@ -36,9 +36,9 @@ create_multiarch_manifest(){
 }
 
 deploy_multiarch_manifest(){
-    build_message Pushing Multiarch Manifests to cloud
+    echo Pushing Multiarch Manifests to cloud
     manifest_tool push from-spec /tmp/ma_tool/ma_manifest.yaml
-    build_message Successfully Pushed Multiarch Manifests to cloud
+    echo Successfully Pushed Multiarch Manifests to cloud
 
 }
 
@@ -49,7 +49,7 @@ main(){
         create_multiarch_manifest ${TARGET_IMAGE} ${ARM_IMAGE} ${AMD64_IMAGE} ${ARM64_IMAGE}
         deploy_multiarch_manifest
     else
-        build_message Branch is NOT master so no need to push multiarch manifests to registry!
+        echo Branch is NOT master so no need to push multiarch manifests to registry!
     fi
 }
 
