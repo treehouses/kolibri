@@ -48,19 +48,19 @@ package_image() {
     local IMAGE_NAME_LATEST=${3}
 
     echo "== Packing image"
- 	build_message processing ${IMAGE_NAME}
- 	if [ ! -z ${IMAGE_DOCKERFILE} ]; then
+    build_message processing ${IMAGE_NAME}
+    if [ ! -z ${IMAGE_DOCKERFILE} ]; then
         docker build -t ${IMAGE_NAME} -f ${IMAGE_BUILD_TARGET_PATH}/${IMAGE_DOCKERFILE} ${IMAGE_BUILD_TARGET_PATH} || exit 1
     else
         docker build -t ${IMAGE_NAME} ${IMAGE_BUILD_TARGET_PATH} || exit 1
- 	fi
-	build_message done processing ${IMAGE_NAME}
-	if [ ${BRANCH} = "master" ]
-	then
-		build_message processing ${IMAGE_NAME_LATEST}
-		docker tag ${IMAGE_NAME} ${IMAGE_NAME_LATEST}
-		build_message done processing ${IMAGE_NAME_LATEST}
-	fi
+    fi
+    build_message done processing ${IMAGE_NAME}
+    if [ ${BRANCH} = "master" ]
+    then
+        build_message processing ${IMAGE_NAME_LATEST}
+        docker tag ${IMAGE_NAME} ${IMAGE_NAME_LATEST}
+        build_message done processing ${IMAGE_NAME_LATEST}
+    fi
 }
 
 push_image() {
@@ -69,14 +69,14 @@ push_image() {
     local IMAGE_NAME_LATEST=${3}
 
     echo "== Pushing image"
- 	build_message processing ${IMAGE_NAME}
-	docker push ${IMAGE_NAME}
-	build_message done processing ${IMAGE_NAME}
-	if [ ${BRANCH} = "master" ]; then
-		build_message processing ${IMAGE_NAME_LATEST}
-		docker push ${IMAGE_NAME_LATEST}
-		build_message done processing ${IMAGE_NAME_LATEST}
-	fi
+    build_message processing ${IMAGE_NAME}
+    docker push ${IMAGE_NAME}
+    build_message done processing ${IMAGE_NAME}
+    if [ ${BRANCH} = "master" ]; then
+        build_message processing ${IMAGE_NAME_LATEST}
+        docker push ${IMAGE_NAME_LATEST}
+        build_message done processing ${IMAGE_NAME_LATEST}
+    fi
 }
 
 delete_image() {
@@ -85,28 +85,28 @@ delete_image() {
     local IMAGE_NAME_LATEST=${3}
 
     echo "== Deleting image"
- 	build_message processing ${IMAGE_NAME}
-	docker rmi -f ${IMAGE_NAME}
-	build_message done processing ${IMAGE_NAME}
-	if [ ${BRANCH} = "master" ]; then
-		build_message processing ${IMAGE_NAME_LATEST}
-		docker rmi -f ${IMAGE_NAME_LATEST}
-		build_message done processing ${IMAGE_NAME_LATEST}
-	fi
+    build_message processing ${IMAGE_NAME}
+    docker rmi -f ${IMAGE_NAME}
+    build_message done processing ${IMAGE_NAME}
+    if [ ${BRANCH} = "master" ]; then
+        build_message processing ${IMAGE_NAME_LATEST}
+        docker rmi -f ${IMAGE_NAME_LATEST}
+        build_message done processing ${IMAGE_NAME_LATEST}
+    fi
 }
 
 main() {
-	local BRANCH="$CI_COMMIT_REF_NAME"
-	local COMMIT=$(git rev-parse --short HEAD)
-	local IMAGE_GLOBAL_VERSION=$(cat package.json | grep version | awk '{print$2}' | awk '{print substr($0, 2, length($0) - 3)}')
+    local BRANCH="$CI_COMMIT_REF_NAME"
+    local COMMIT=$(git rev-parse --short HEAD)
+    local IMAGE_GLOBAL_VERSION=$(cat package.json | grep version | awk '{print$2}' | awk '{print substr($0, 2, length($0) - 3)}')
 
     if [[ ! -z ${IMAGE_ALIAS} ]]; then
-	    IMAGE_ALIAS_WITH_SEPARATOR=${IMAGE_ALIAS}-
-	    IMAGE_LATEST_TAG=${IMAGE_ALIAS}
+        IMAGE_ALIAS_WITH_SEPARATOR=${IMAGE_ALIAS}-
+        IMAGE_LATEST_TAG=${IMAGE_ALIAS}
     else
         IMAGE_ALIAS_WITH_SEPARATOR=""
         IMAGE_LATEST_TAG="latest"
-	fi
+    fi
 
     local IMAGE_NAME=${DOCKER_ORG}/${DOCKER_REPO}:${IMAGE_ALIAS_WITH_SEPARATOR}${BRANCH}-${COMMIT}-${IMAGE_GLOBAL_VERSION}
     local IMAGE_NAME_LATEST=${DOCKER_ORG}/${DOCKER_REPO}:${IMAGE_LATEST_TAG}
