@@ -98,7 +98,6 @@ delete_image() {
 main() {
     local BRANCH=$(git rev-parse --abbrev-ref HEAD)
     local COMMIT=$(git rev-parse --short HEAD)
-    local IMAGE_GLOBAL_VERSION=$(cat package.json | grep version | awk '{print$2}' | awk '{print substr($0, 2, length($0) - 3)}')
 
     if [[ ! -z ${IMAGE_ALIAS} ]]; then
         IMAGE_ALIAS_WITH_SEPARATOR=${IMAGE_ALIAS}-
@@ -108,7 +107,7 @@ main() {
         IMAGE_LATEST_TAG="latest"
     fi
 
-    local IMAGE_NAME=${DOCKER_ORG}/${DOCKER_REPO}:${IMAGE_ALIAS_WITH_SEPARATOR}${BRANCH}-${COMMIT}-${IMAGE_GLOBAL_VERSION}
+    local IMAGE_NAME=${DOCKER_ORG}/${DOCKER_REPO}:${IMAGE_ALIAS_WITH_SEPARATOR}${BRANCH}-${COMMIT}
     local IMAGE_NAME_LATEST=${DOCKER_ORG}/${DOCKER_REPO}:${IMAGE_LATEST_TAG}
 
     echo Full name: ${IMAGE_NAME}
