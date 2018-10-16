@@ -96,7 +96,7 @@ delete_image() {
 }
 
 main() {
-    local BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    local BRANCH=${TRAVIS_CURRENT_BRANCH}
     local COMMIT=$(git rev-parse --short HEAD)
 
     if [[ ! -z ${IMAGE_ALIAS} ]]; then
