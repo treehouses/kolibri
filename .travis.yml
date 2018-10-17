@@ -2,6 +2,8 @@ _prepare_deploy: &_prepare_deploy
   before_script:
   - sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/1.14.1/yq_linux_amd64
   - sudo chmod +x /usr/local/bin/yq
+  - sudo wget -O /usr/local/bin/manifest_tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
+  - sudo chmod +x /usr/local/bin/manifest_tool
   - export APP_VERSION=0.10.3
   - export ARM_IMAGE=arm-${APP_VERSION}
   - export ARM64_IMAGE=arm64-${APP_VERSION}
