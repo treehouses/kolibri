@@ -1,4 +1,8 @@
 # Multiarchitecture Kolibri for docker
+
+[![Build Status](https://travis-ci.org/treehouses/kolibri.svg?branch=master)](https://travis-ci.org/treehouses/kolibri)
+[![](https://images.microbadger.com/badges/image/treehouses/kolibri.svg)](https://microbadger.com/images/treehouses/kolibri "Get your own image badge on microbadger.com")
+
 Kolibri docker image (Tested on amd64, armv, arm64)
 ## How to use ?
 
