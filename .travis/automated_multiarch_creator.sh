@@ -43,6 +43,7 @@ deploy_multiarch_manifest(){
 }
 
 main(){
+    docker login --username="$DOCKER_USER" --password="$DOCKER_PASS"
     local TARGET_IMAGE=${DOCKER_ORG}/${DOCKER_REPO}:${IMAGE_ALIAS}
     local BRANCH=$(if [ ${TRAVIS_PULL_REQUEST} == "false" ]; then echo ${TRAVIS_BRANCH}; else echo ${TRAVIS_PULL_REQUEST_BRANCH}; fi)
     if [ "$BRANCH" = "master" ]; then
@@ -51,6 +52,7 @@ main(){
     else
         echo Branch is NOT master so no need to push multiarch manifests to registry!
     fi
+    docker logout
 }
 
 main
