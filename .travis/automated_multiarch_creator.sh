@@ -31,13 +31,13 @@ create_multiarch_manifest(){
         yq w - manifests[2].image ${ARM64_IMAGE} | \
         yq w - manifests[2].platform.architecture arm64 | \
         yq w - manifests[2].platform.os linux | \
-        tee /tmp/ma_tool/ma_manifest.yaml
+        tee ma_manifest.yaml
     }
 }
 
 deploy_multiarch_manifest(){
     echo Pushing Multiarch Manifests to cloud
-    manifest_tool push from-spec /tmp/ma_tool/ma_manifest.yaml
+    manifest_tool push from-spec ma_manifest.yaml
     echo Successfully Pushed Multiarch Manifests to cloud
 
 }
