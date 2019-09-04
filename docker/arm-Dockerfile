@@ -7,8 +7,10 @@ RUN apk update && apk add \
 
 #no need to add cleaning command as alpine cleans package automatically
 
+ENV TAG_NAME $(curl --silent "https://api.github.com/repos/learningequality/kolibri/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+
 #download kolibri
-RUN curl -o kolibri -L https://github.com/learningequality/kolibri/releases/download/v0.10.3/kolibri-0.10.3.pex
+RUN curl -o kolibri -L https://github.com/learningequality/kolibri/releases/download/TAG_NAME/*.pex
 
 #make executable
 RUN chmod +x kolibri
