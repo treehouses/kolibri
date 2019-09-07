@@ -23,4 +23,4 @@ RUN mkdir /root/.kolibri
 
 EXPOSE 8080
 
-CMD ./kolibri start && tail -f /root/.kolibri/server.log
+CMD ./kolibri start && tail -f /root/.kolibri/logs/kolibri.txt
