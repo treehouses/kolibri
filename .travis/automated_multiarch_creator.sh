@@ -18,7 +18,7 @@ create_multiarch_manifest(){
     local TARGET_IMAGE=${1}
     local ARM_IMAGE=${2}
     local AMD64_IMAGE=${3}
-    local ARM64_IMAGE=${4}
+#     local ARM64_IMAGE=${4}
     echo Creating multiarch manifest
     {
         yq n image ${TARGET_IMAGE} | \
@@ -28,9 +28,9 @@ create_multiarch_manifest(){
         yq w - manifests[1].image ${AMD64_IMAGE} | \
         yq w - manifests[1].platform.architecture amd64 | \
         yq w - manifests[1].platform.os linux | \
-        yq w - manifests[2].image ${ARM64_IMAGE} | \
-        yq w - manifests[2].platform.architecture arm64 | \
-        yq w - manifests[2].platform.os linux | \
+#         yq w - manifests[2].image ${ARM64_IMAGE} | \
+#         yq w - manifests[2].platform.architecture arm64 | \
+#         yq w - manifests[2].platform.os linux | \
         tee ma_manifest.yaml
     }
 }
@@ -47,7 +47,8 @@ main(){
     local TARGET_IMAGE=${DOCKER_ORG}/${DOCKER_REPO}:${IMAGE_ALIAS}
     local BRANCH=$(if [ ${TRAVIS_PULL_REQUEST} == "false" ]; then echo ${TRAVIS_BRANCH}; else echo ${TRAVIS_PULL_REQUEST_BRANCH}; fi)
     if [ "$BRANCH" = "master" ]; then
-        create_multiarch_manifest ${TARGET_IMAGE} ${ARM_IMAGE} ${AMD64_IMAGE} ${ARM64_IMAGE}
+#         create_multiarch_manifest ${TARGET_IMAGE} ${ARM_IMAGE} ${AMD64_IMAGE} ${ARM64_IMAGE}
+        create_multiarch_manifest ${TARGET_IMAGE} ${ARM_IMAGE} ${AMD64_IMAGE}
         deploy_multiarch_manifest
     else
         echo Branch is NOT master so no need to push multiarch manifests to registry!
