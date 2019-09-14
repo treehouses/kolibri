@@ -5,10 +5,7 @@ _prepare_deploy: &_prepare_deploy
   - sudo wget -O /usr/local/bin/manifest_tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
   - sudo chmod +x /usr/local/bin/manifest_tool
 #   - export APP_VERSION=0.12.8
-  - export APP_VERSION=$(curl --silent "https://api.github.com/repos/learningequality/kolibri/releases/latest" \
-    | grep "tag_name" \
-    | cut -d '"' -f 4 \
-    | cut -c 2-)
+  - export APP_VERSION=$(curl --silent "https://api.github.com/repos/learningequality/kolibri/releases/latest" | grep "tag_name" | cut -d '"' -f 4 | cut -c 2-)
   - export ARM_IMAGE=arm-${APP_VERSION}
   #- export ARM64_IMAGE=arm64-${APP_VERSION}
   - export AMD64_IMAGE=amd64-${APP_VERSION}
