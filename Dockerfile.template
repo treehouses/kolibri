@@ -1,4 +1,4 @@
-FROM {{base_image}}
+FROM treehouses/alpine
 
 #install python
 RUN apk update && apk add \
