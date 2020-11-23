@@ -1,4 +1,4 @@
-FROM treehouses/alpine
+FROM {{base_image}}
 
 #install python
 RUN apk update && apk add \
@@ -7,14 +7,15 @@ RUN apk update && apk add \
 
 #no need to add cleaning command as alpine cleans package automatically
 
-#download the latest
+#download the latest kolibri
 RUN curl --silent "https://api.github.com/repos/learningequality/kolibri/releases/latest" \
     | grep "browser_download_url.*pex" \
     | cut -d '"' -f 4 \
     | xargs curl -o kolibri -L
 
-#make executable
-RUN chmod +x kolibri
+#make executable and fix alpine
+RUN chmod +x kolibri && \
+    ln -sn /usr/bin/python3 /usr/bin/python
 
 #used for storing db and content (used when mounting volume)
 RUN mkdir /root/.kolibri
