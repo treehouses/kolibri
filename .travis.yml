@@ -33,7 +33,7 @@ script:
 - build_image "treehouses/alpine:latest" amd64 "neethumohan1212/kolibri"
 - build_image "treehouses/alpine:latest" arm64 "neethumohan1212/kolibri"
 - flag=$(compare "treehouses/alpine@"$alpine_arm_sha "neethumohan1212/kolibri@"$kolibri_arm_sha "treehouses/alpine@"$alpine_amd64_sha "neethumohan1212/kolibri@"$kolibri_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "neethumohan1212/kolibri@"$kolibri_arm64_sha)
-- flag=true
+- flag="true"
 - echo $flag
 - before_deploy:
 - deploy_image "neethumohan1212/kolibri" arm
