@@ -11,7 +11,7 @@ RUN apk update && apk add \
 RUN curl --silent "https://api.github.com/repos/learningequality/kolibri/releases/latest" \
     | grep "browser_download_url.*pex" \
     | cut -d '"' -f 4 \
-    | curl -o kolibri -L
+    | xargs curl -o kolibri -L
 
 #make executable and fix alpine
 RUN chmod +x kolibri && \
