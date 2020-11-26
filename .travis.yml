@@ -35,7 +35,7 @@ script:
 - flag=$(compare "treehouses/alpine@"$alpine_arm_sha "neethumohan1212/kolibri@"$kolibri_arm_sha "treehouses/alpine@"$alpine_amd64_sha "neethumohan1212/kolibri@"$kolibri_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "neethumohan1212/kolibri@"$kolibri_arm64_sha)
 - flag="true"
 - echo $flag
-- before_deploy:
+before_deploy:
 - deploy_image "neethumohan1212/kolibri" arm
 - deploy_image "neethumohan1212/kolibri" amd64
 - deploy_image "neethumohan1212/kolibri" arm64
