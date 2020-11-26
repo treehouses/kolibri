@@ -14,8 +14,8 @@ RUN curl --silent "https://api.github.com/repos/learningequality/kolibri/release
     | xargs curl -o kolibri -L
 
 #make executable and fix alpine
-RUN chmod +x kolibri && \
-    ln -sn /usr/bin/python3 /usr/bin/python
+#RUN chmod +x kolibri && \
+    #ln -sn /usr/bin/python3 /usr/bin/python
 
 #used for storing db and content (used when mounting volume)
 RUN mkdir /root/.kolibri
