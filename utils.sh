@@ -54,11 +54,11 @@ image_version() {
   echo $version
 }
 
-compare() {
-  result_arm=$(is_base $1 $2)
-  result_arm64=$(is_base $3 $4)
-  result_amd64=$(is_base $5 $6)
-  if [ $result_arm == "false" ] || [ $result_amd64 == "false" ] || [ $result_arm64 == "false" ];
+change() {
+  flag_arm=$1
+  flag_arm64=$2
+  flag_amd64=$3
+  if [ $flag_arm == "false" ] || [ $flag_arm64 == "false" ] || [ $flag_amd64 == "false" ];
   then
     echo "true"
   else
