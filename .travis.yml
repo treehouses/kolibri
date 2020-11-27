@@ -29,20 +29,18 @@ script:
 - echo $flag_arm64
 - echo $DOCKERAPIKEY | docker login -u "neethumohan1212" --password-stdin
 - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-- build_image "treehouses/alpine:latest" arm "neethumohan1212/kolibri"
-- build_image "treehouses/alpine:latest" amd64 "neethumohan1212/kolibri"
-- build_image "treehouses/alpine:latest" arm64 "neethumohan1212/kolibri"
-- flag=$(compare "treehouses/alpine@"$alpine_arm_sha "neethumohan1212/kolibri@"$kolibri_arm_sha "treehouses/alpine@"$alpine_amd64_sha "neethumohan1212/kolibri@"$kolibri_amd64_sha "treehouses/alpine@"$alpine_arm64_sha "neethumohan1212/kolibri@"$kolibri_arm64_sha)
+- build_image "treehouses/alpine:latest" arm "neethumohan1212/kolibri" $flag_arm
+- build_image "treehouses/alpine:latest" amd64 "neethumohan1212/kolibri" $flag_amd64
+- build_image "treehouses/alpine:latest" arm64 "neethumohan1212/kolibri" $flag_arm64
+- flag=$(change $flag_arm $flag_arm64 $flag_amd64)
 - flag="true"
 - echo $flag
 before_deploy:
 - deploy_image "neethumohan1212/kolibri" arm
 - deploy_image "neethumohan1212/kolibri" amd64
 - deploy_image "neethumohan1212/kolibri" arm64
-- timetag=$(date +%Y%m%d%H%M)
-- echo $timetag
 - tag1="latest"
-- tag2=$timetag
+- tag2=$(date +%Y%m%d%H%M)
 - echo $tag2
 - create_manifest neethumohan1212/kolibri $tag1 $tag2 neethumohan1212/kolibri-tags:amd64
   neethumohan1212/kolibri-tags:arm neethumohan1212/kolibri-tags:arm64
