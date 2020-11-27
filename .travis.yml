@@ -29,22 +29,18 @@ script:
 - echo $flag_arm64
 - echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdinf
 - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-- build_image "treehouses/alpine:latest" arm "treehouses/kolibri"
-- build_image "treehouses/alpine:latest" amd64 "treehouses/kolibri"
-- build_image "treehouses/alpine:latest" arm64 "treehouses/kolibri"
-- flag=$(compare "treehouses/alpine@"$alpine_arm_sha "treehouses/kolibri@"$kolibri_arm_sha
-  "treehouses/alpine@"$alpine_amd64_sha "treehouses/kolibri@"$kolibri_amd64_sha "treehouses/alpine@"$alpine_arm64_sha
-  "treehouses/kolibri@"$kolibri_arm64_sha)
-- flag="true"
+- build_image "treehouses/alpine:latest" arm "treehouses/kolibri" $flag_arm
+- build_image "treehouses/alpine:latest" amd64 "treehouses/kolibri" $flag_amd64
+- build_image "treehouses/alpine:latest" arm64 "treehouses/kolibri" $flag_arm64
+- flag=$(change $flag_arm $flag_arm64 $flag_amd64)
+- #flag="true"
 - echo $flag
 before_deploy:
 - deploy_image "treehouses/kolibri" arm
 - deploy_image "treehouses/kolibri" amd64
 - deploy_image "treehouses/kolibri" arm64
-- timetag=$(date +%Y%m%d%H%M)
-- echo $timetag
 - tag1="latest"
-- tag2=$timetag
+- tag2=$(date +%Y%m%d%H%M)
 - echo $tag2
 - create_manifest treehouses/kolibri $tag1 $tag2 treehouses/kolibri-tags:amd64 treehouses/kolibri-tags:arm
   treehouses/kolibri-tags:arm64
