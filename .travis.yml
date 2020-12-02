@@ -1,54 +1,58 @@
-_prepare_deploy: &_prepare_deploy
-  before_script:
-  - sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/1.14.1/yq_linux_amd64
-  - sudo chmod +x /usr/local/bin/yq
-  - sudo wget -O /usr/local/bin/manifest_tool https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
-  - sudo chmod +x /usr/local/bin/manifest_tool
-#   - export APP_VERSION=0.12.8
-  - export APP_VERSION=$(curl --silent "https://api.github.com/repos/learningequality/kolibri/releases/latest" | grep "tag_name" | cut -d '"' -f 4 | cut -c 2-)
-  - echo $APP_VERSION
-  - export ARM_IMAGE=arm-${APP_VERSION}
-  #- export ARM64_IMAGE=arm64-${APP_VERSION}
-  - export AMD64_IMAGE=amd64-${APP_VERSION}
-  - export ARM_INTERMEDIARY_IMAGE_NAME=treehouses/kolibri-tags:${ARM_IMAGE}
-  #- export ARM64_INTERMEDIARY_IMAGE_NAME=treehouses/kolibri-tags:${ARM64_IMAGE}
-  - export AMD64_INTERMEDIARY_IMAGE_NAME=treehouses/kolibri-tags:${AMD64_IMAGE}
 sudo: required
 addons:
   apt:
     update: true
     packages:
     - docker-ce
-stages:
-- docker-creation
-- multiarch-release
-jobs:
-  include:
-  - stage: docker-creation
-    # For AMD64
-    <<: *_prepare_deploy
-    script:
-    - ./.travis/automated_image_creator.sh -o treehouses -r kolibri-tags -a ${AMD64_IMAGE} -f amd64-Dockerfile -p ./docker
-  - stage: docker-creation
-    # For arm64
-#     <<: *_prepare_deploy
-#     script:
-#     - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-#     - ./.travis/automated_image_creator.sh -o treehouses -r kolibri-tags -a ${ARM64_IMAGE} -f arm64-Dockerfile -p ./docker
-#   - stage: docker-creation
-    # For ARM
-    <<: *_prepare_deploy
-    script:
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - ./.travis/automated_image_creator.sh -o treehouses -r kolibri-tags -a ${ARM_IMAGE} -f arm-Dockerfile -p ./docker
-  - stage: multiarch-release
-    <<: *_prepare_deploy
-    script:
-#     - ./.travis/automated_multiarch_creator.sh -o treehouses -r kolibri -a ${APP_VERSION} -m ${ARM_INTERMEDIARY_IMAGE_NAME} -s ${ARM64_INTERMEDIARY_IMAGE_NAME} -d ${AMD64_INTERMEDIARY_IMAGE_NAME}
-    - ./.travis/automated_multiarch_creator.sh -o treehouses -r kolibri -a ${APP_VERSION} -m ${ARM_INTERMEDIARY_IMAGE_NAME} -d ${AMD64_INTERMEDIARY_IMAGE_NAME}
-#     - ./.travis/automated_multiarch_creator.sh -o treehouses -r kolibri -a latest -m ${ARM_INTERMEDIARY_IMAGE_NAME} -s ${ARM64_INTERMEDIARY_IMAGE_NAME} -d ${AMD64_INTERMEDIARY_IMAGE_NAME}
-    - ./.travis/automated_multiarch_creator.sh -o treehouses -r kolibri -a latest -m ${ARM_INTERMEDIARY_IMAGE_NAME} -d ${AMD64_INTERMEDIARY_IMAGE_NAME}
+services:
+- docker
+script:
+- export DOCKER_CLI_EXPERIMENTAL=enabled
+- source utils.sh
+- alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
+- echo $alpine_arm_sha
+- kolibri_arm_sha=$(get_manifest_sha "treehouses/kolibri:latest" "arm")
+- echo $kolibri_arm_sha
+- flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "treehouses/kolibri@"$kolibri_arm_sha)
+- echo $flag_arm
+- alpine_amd64_sha=$(get_manifest_sha "treehouses/alpine:latest" "amd64")
+- echo $alpine_amd64_sha
+- kolibri_amd64_sha=$(get_manifest_sha "treehouses/kolibri:latest" "amd64")
+- echo $kolibri_amd64_sha
+- flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "treehouses/kolibri@"$kolibri_amd64_sha)
+- echo $flag_amd64
+- alpine_arm64_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm64")
+- echo $alpine_arm64_sha
+- kolibri_arm64_sha=$(get_manifest_sha "treehouses/kolibri:latest" "arm64")
+- echo $kolibri_arm64_sha
+- flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "treehouses/kolibri@"$kolibri_arm64_sha)
+- echo $flag_arm64
+- echo $DOCKERAPIKEY | docker login -u "sevenseas" --password-stdinf
+- docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+- build_image "treehouses/alpine:latest" arm "treehouses/kolibri" $flag_arm
+- build_image "treehouses/alpine:latest" amd64 "treehouses/kolibri" $flag_amd64
+- build_image "treehouses/alpine:latest" arm64 "treehouses/kolibri" $flag_arm64
+- flag=$(change $flag_arm $flag_arm64 $flag_amd64)
+- flag="true"
+- echo $flag
+before_deploy:
+- deploy_image "treehouses/kolibri" arm
+- deploy_image "treehouses/kolibri" amd64
+- deploy_image "treehouses/kolibri" arm64
+- tag1="latest"
+- tag2=$(date +%Y%m%d%H%M)
+- echo $tag2
+- create_manifest treehouses/kolibri $tag1 $tag2 treehouses/kolibri-tags:amd64 treehouses/kolibri-tags:arm
+  treehouses/kolibri-tags:arm64
+- docker manifest inspect treehouses/kolibri:$tag1
+- docker manifest inspect treehouses/kolibri:$tag2
+deploy:
+- provider: script
+  script: docker manifest push treehouses/kolibri:$tag1; docker manifest push treehouses/kolibri:$tag2
+  skip_cleanup: true
+  on:
+    all_branches: true
+    condition: "$flag = true"
 env:
   global:
-  - secure: Hoh9KJs7k0K07NLHAGyvK8s28IH0KwAfITPLOlDzMwsb5x86orGBZ2H+3S9rq0JILoMyUEpbko6/oPmpk5S9OC9/0mWNWecSs3K6UklydAJKDLQc2n5JOKPoAhqkuY6J04IsLdcyQ+FAt3m6sMf4WwUI/6h4nJukT79pBIBqtLWIVIT6ss+P/XAHMsQce3cHf+/hPCH5A8ApQKUT+VDrMs6cS9gIJXBMGjml/7aRO+OTwxhFV6Nb19Z0DpcZ7blPMP+af9g+53NjkYJs8yxFziB5yD0iwU2Sv9RR9TsbYg9SlK7Ltd5K9ESEYTTk02wXjdX0HogUpxCCcfflkIFnmjsVyawWppYwoZG2PjGswfg9wqj78i46vI/ZkxSBZoKhPwLOEssgCRj6AUoWYYLHbw3LqEuuA8fzohrV6gnXWB6J+jIedJyaXkLNWFeSfXPIjIUiLK4WWsA96lFFhDUPcRqblP5581CJ3iMGpoYUFdcyrERZ0/gZJyOXMdE+S/SG3SiRPypEIlZFObn+L6j4d5C4ojzrYIiy40CH5pQ89j1tsBdG+3zv00e71/EJudvA/cwv/GrzL5tMPOJH5oASgz4Ugx8eYUvLDeWCqkBCFuYNTv0NVcAJx1eiaJ61V76qj4RtqcjMfFeeLA9h5Y4vFMFISEIW+asWVfJIQz9n8As=
-  - secure: RuSVMvQh7vNSCesh+80b+3mfRcVeGQ+DoQWqBssZH0QQ/jp6yDbTinParOsCKLSwhPIfSR1BOgyj6l6BtnUtS/17j3L+Y1BkB+Os/UN2h4JlQrmJeIVlFHf2+8Wff6GDWB9I0tLGtol7Fva+sGAK/HxwFqDQKUfLjusQ9qLHJiLlsl7QLMu/zLqAJY/QuPZSFfc+gougzdW/C4whQm1fled4vIC01zW9P8rVow07/mqJFUoDrtoAcMnylaYlkq9hikH2knNwCEjvF1Qk9o206E+NwQAqJT+O1qSPtFgdUYneNUHCB8zrkRUqvCyO7Wh3NJ7xhe6AELqjLRxqZ4bMkR7JXMYY3J2SMUaSSh5Us1p2CydBqcgHqlXnhlPMkH4TgAGEH8ZT3/yolrMZYTGmt5aYgVTuFpy6r8niVU4NnhRnSEVybtex+LO4smX2MYShDtf9caSqAFt+ck6ZhymhSAryRGh1a53nahdMm4C8SXrApUgLLIXkhKYNscUCI6M6jXA1o7ljB2xAGTcl5PtBQIFC8/4KmTRFfnW1F36heqLl4NTdWRd4D51kIHZKjxecLXL5CGWyReYZrF/jo1XavrdbLaNvAE9SZDVKRAsc48yKHWzC75UYUvlEB5P9NvFNuEHneshTKAJygldtQYwsAZn1EIZt4WKd4bh9EtmGtwg=
+  - secure: JIi2w0/00THAOWzu6XMWGqz7fahSwAFrH9zzJyhZ8+frj2zv+MbhmGb1pdmA4qtKLN5UOMHbNFbvZUYWHDE2bZxqWWIpgUTwJoh07bVp/lWIdLSOgN5+gvu3Rqd/Ebii0EZU/tUJ4bBrODZcZxFXrqBWfE3mp4AMjR89bDxprszIwOq1B9eTMpiLPZFiuCuem31ybAbEebJhBZYEnT6BMV6id9NZ0bt+mInbVBM5p8GrMsm5FSe+NUGN9tRvVm0p3kLCof3HfRsCUDCEl8C2MKIID6RIpmd/UtlHeMAV0A0vwkmrIBbfxrGwsa6wekusHr56dm1l8ouHzPrVPEtr6HL3Y4hpQ2ZHqDYOZSzsQngs+xACHsb2OFjy8WrIWaSnmVQFHiWy4uF2w2XPlcJTZfi0kJYB9KSCWf9oZdC428xsAwvM4/kz7J6zQ25nEeqa6mqh+iL8LOWBrW2rQlTRfgudpqmZxRSKOpipnTrr7YHOL2MfkZBjNvb/Nn24aHOi/2Ws6fhTmPiv0PWtlEMpov4b5ruh3e7yAVvBvNGIO2gi1nizCfnMSXdntwBr/zZwe+Z4BbSOVC/o8t9/r6+zs/KwOHWIdb2S8etFIAquEyTBLUalwcfzZ6rZeeuc6q+cTMDQA8L69XRoKjjTM7wgQ3nTEVB439GtB/MWwH6OsVU=
