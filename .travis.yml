@@ -34,7 +34,7 @@ script:
 - build_image "treehouses/alpine:latest" arm64 "treehouses/kolibri" $flag_arm64
 - flag=$(change $flag_arm $flag_arm64 $flag_amd64)
 - flag="true"
-- #echo $flag
+- echo $flag
 before_deploy:
 - deploy_image "treehouses/kolibri" arm
 - deploy_image "treehouses/kolibri" amd64
