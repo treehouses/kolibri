@@ -1,4 +1,4 @@
-FROM arm32v7/alpine
+FROM multiarch/alpine:armhf-latest-stable
 
 #install python
 RUN apk update && apk add \
