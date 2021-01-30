@@ -1,4 +1,4 @@
-FROM multiarch/alpine:armhf-latest-stable
+FROM alpine:latest
 
 #install python
 RUN apk update && apk add \
