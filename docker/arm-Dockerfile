@@ -1,4 +1,4 @@
-FROM arm32v7/alpine
+FROM arm32v7/alpine:3.12
 
 #install python
 RUN apk update && apk add \
