@@ -2,7 +2,7 @@ FROM alpine:latest
 
 #install python
 RUN apk update && apk add \
-    python \
+    python2 \
     curl
 
 #no need to add cleaning command as alpine cleans package automatically

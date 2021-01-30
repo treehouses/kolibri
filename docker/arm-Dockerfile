@@ -1,8 +1,8 @@
-FROM multiarch/alpine:armhf-latest-stable
+FROM arm32v7/alpine:3.12
 
 #install python
 RUN apk update && apk add \
-    python \
+    python2 \
     curl
 
 #no need to add cleaning command as alpine cleans package automatically
