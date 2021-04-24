@@ -56,4 +56,5 @@ jobs:
             docker manifest push neethumohan1212:$tag; docker manifest push neethumohan1212:$tag2
           else
             echo "no changes"
+          fi
           
