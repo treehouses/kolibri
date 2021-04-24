@@ -46,10 +46,17 @@ jobs:
           flag=$(change $flag_arm $flag_arm64 $flag_amd64)
           flag="true"
           echo $flag
+<<<<<<< HEAD
           tag1="latest"
           tag2="0.12.8-$(date +%Y%m%d%H%M)"
           echo $tag2
           docker manifest create $repo:$tag1 neethumohan1212/kolibri-tags:amd64 neethumohan1212/kolibri-tags:arm neethumohan1212/kolibri-tags:arm64
+=======
+          tag="0.12.8-$(date +%Y%m%d%H%M)"
+          tag2="latest"
+          echo $tag
+          create_manifest neethumohan1212/kolibri $tag1 $tag2 neethumohan1212/kolibri-tags:amd64 neethumohan1212/kolibri-tags:arm neethumohan1212/kolibri-tags:arm64
+>>>>>>> e3a142962b295da93d0eea25665b8baeca87dbee
           docker manifest inspect neethumohan1212/kolibri:$tag1
           docker manifest inspect neethumohan1212/kolibri:$tag2
           if [[ $flag == true ]]; then
