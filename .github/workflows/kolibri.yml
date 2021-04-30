@@ -48,12 +48,12 @@ jobs:
           tag1="latest"
           tag2="$(date +%Y%m%d%H%M)"
           echo $tag2
-          docker manifest create $repo:$tag1 neethumohan1212/kolibri-tags:amd64 neethumohan1212/kolibri-tags:arm neethumohan1212/kolibri-tags:arm64
-          docker manifest inspect neethumohan1212/kolibri:$tag1
-          docker manifest inspect neethumohan1212/kolibri:$tag2
-          if [[ $flag == true ]]; then
-            docker manifest push neethumohan1212/kolibri:$tag1; docker manifest push neethumohan1212/kolibri:$tag2
-          else
-            echo "no changes"
-          fi
+          # docker manifest create $repo:$tag1 neethumohan1212/kolibri-tags:amd64 neethumohan1212/kolibri-tags:arm neethumohan1212/kolibri-tags:arm64
+          # docker manifest inspect neethumohan1212/kolibri:$tag1
+          # docker manifest inspect neethumohan1212/kolibri:$tag2
+          # if [[ $flag == true ]]; then
+          #   docker manifest push neethumohan1212/kolibri:$tag1; docker manifest push neethumohan1212/kolibri:$tag2
+          # else
+          #   echo "no changes"
+          # fi
           
