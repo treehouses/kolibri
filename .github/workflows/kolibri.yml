@@ -18,44 +18,44 @@ jobs:
       - name: neethumohan1212 kolibri
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-          repo="neethumohan1212/kolibri"
+          repo="neethumohan1212 kolibri"
           source utils.sh
-          alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
+          alpine_arm_sha=$(get_manifest_sha "neethumohan1212/alpine:latest" "arm")
           echo $alpine_arm_sha
-          kolibri_arm_sha=$(get_manifest_sha "neethumohan1212/kolibri:latest" "arm")
+          kolibri_arm_sha=$(get_manifest_sha "neethumohan1212 kolibri:latest" "arm")
           echo $kolibri_arm_sha
-          flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "neethumohan1212/kolibri@"$kolibri_arm_sha)
+          flag_arm=$(is_base "neethumohan1212/alpine@"$alpine_arm_sha "neethumohan1212 kolibri@"$kolibri_arm_sha)
           echo $flag_arm
-          alpine_amd64_sha=$(get_manifest_sha "treehouses/alpine:latest" "amd64")
+          alpine_amd64_sha=$(get_manifest_sha "neethumohan1212/alpine:latest" "amd64")
           echo $alpine_amd64_sha
-          kolibri_amd64_sha=$(get_manifest_sha "neethumohan1212/kolibri:latest" "amd64")
+          kolibri_amd64_sha=$(get_manifest_sha "neethumohan1212 kolibri:latest" "amd64")
           echo $kolibri_amd64_sha
-          flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "neethumohan1212/kolibri@"$kolibri_amd64_sha)
+          flag_amd64=$(is_base "neethumohan1212/alpine@"$alpine_amd64_sha "neethumohan1212 kolibri@"$kolibri_amd64_sha)
           echo $flag_amd64
-          alpine_arm64_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm64")
+          alpine_arm64_sha=$(get_manifest_sha "neethumohan1212/alpine:latest" "arm64")
           echo $alpine_arm64_sha
-          kolibri_arm64_sha=$(get_manifest_sha "neethumohan1212/kolibri:latest" "arm64")
+          kolibri_arm64_sha=$(get_manifest_sha "neethumohan1212 kolibri:latest" "arm64")
           echo $kolibri_arm64_sha
-          flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "neethumohan1212/kolibri@"$kolibri_arm64_sha)
+          flag_arm64=$(is_base "neethumohan1212/alpine@"$alpine_arm64_sha "neethumohan1212 kolibri@"$kolibri_arm64_sha)
           echo $flag_arm64
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          build_image "treehouses/alpine:latest" arm "neethumohan1212/kolibri" $flag_arm
-          build_image "treehouses/alpine:latest" amd64 "neethumohan1212/kolibri" $flag_amd64
-          build_image "treehouses/alpine:latest" arm64 "neethumohan1212/kolibri" $flag_arm64
+          build_image "neethumohan1212/alpine:latest" arm "neethumohan1212 kolibri" $flag_arm
+          build_image "neethumohan1212/alpine:latest" amd64 "neethumohan1212 kolibri" $flag_amd64
+          build_image "neethumohan1212/alpine:latest" arm64 "neethumohan1212 kolibri" $flag_arm64
           flag=$(change $flag_arm $flag_arm64 $flag_amd64)
           flag="true"
           echo $flag
           tag1=$(date +%Y%m%d%H%M)
           tag2="latest"
           echo $tag2
-          docker manifest create neethumohan1212/kolibri:$tag1 neethumohan1212/kolibri-tags:amd64 neethumohan1212/kolibri-tags:arm neethumohan1212/kolibri-tags:arm64
-          docker manifest create neethumohan1212/kolibri:$tag2 neethumohan1212/kolibri-tags:amd64 neethumohan1212/kolibri-tags:arm neethumohan1212/kolibri-tags:arm64
-          # docker manifest inspect neethumohan1212/kolibri:$tag1
-          # docker manifest inspect neethumohan1212/kolibri:$tag2
-          # if [[ $flag == true ]]; then
-          #   docker manifest push neethumohan1212/kolibri:$tag1
-          #   docker manifest push neethumohan1212/kolibri:$tag2
-          # else
-          #   echo "no changes"
-          # fi
+          docker manifest create neethumohan1212 kolibri:$tag1 neethumohan1212 kolibri-tags:amd64 neethumohan1212 kolibri-tags:arm neethumohan1212 kolibri-tags:arm64
+          docker manifest create neethumohan1212 kolibri:$tag2 neethumohan1212 kolibri-tags:amd64 neethumohan1212 kolibri-tags:arm neethumohan1212 kolibri-tags:arm64
+          docker manifest inspect neethumohan1212 kolibri:$tag1
+          docker manifest inspect neethumohan1212 kolibri:$tag2
+          if [[ $flag == true ]]; then
+            docker manifest push neethumohan1212 kolibri:$tag1
+            docker manifest push neethumohan1212 kolibri:$tag2
+          else
+            echo "no changes"
+          fi
 
