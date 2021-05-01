@@ -17,13 +17,8 @@ jobs:
       - name: neethumohan1212 kolibri
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
-<<<<<<< HEAD
           repo="neethumohan1212/kolibri"
           source utils.sh
-=======
-          repo="treehouses/kolibri"
-          source .github/workflows/utils.sh
->>>>>>> 87c6aba6daf7468919711502bd06674d6515d861
           alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
           echo $alpine_arm_sha
           kolibri_arm_sha=$(get_manifest_sha "$repo:latest" "arm")
