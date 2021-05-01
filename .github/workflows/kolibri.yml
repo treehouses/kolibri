@@ -53,7 +53,7 @@ jobs:
           docker manifest inspect neethumohan1212/kolibri:$tag2
           if [[ $flag == true ]]; then
             docker manifest push neethumohan1212/kolibri:$tag1
-            docker manifest push neethumohan1212/kolibri:$tag2
+            #docker manifest push neethumohan1212/kolibri:$tag2
           else
             echo "no changes"
           fi
