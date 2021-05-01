@@ -53,7 +53,7 @@ jobs:
           docker manifest inspect $repo:$tag1
           docker manifest inspect $repo:$tag2
           if [[ $flag == true ]]; then
-            docker manifest push $repo:$tag1; docker manifest push $repo:$tag2
+            #docker manifest push $repo:$tag1; docker manifest push $repo:$tag2
           else
             echo "no changes"
           fi
