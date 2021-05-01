@@ -48,6 +48,7 @@ jobs:
           tag1=$(date +%Y%m%d%H%M)
           tag2="latest"
           echo $tag2
+          docker login -u ${{ secrets.DOCKERUSERNAME }} -p ${{ secrets.DOCKERAPIKEY }}
           docker manifest create $repo $tag1 $tag2 $repo-tags:amd64 $repo-tags:arm $repo-tags:arm64
           docker manifest inspect $repo:$tag1
           docker manifest inspect $repo:$tag2
@@ -56,4 +57,4 @@ jobs:
           else
             echo "no changes"
           fi
-          
+
