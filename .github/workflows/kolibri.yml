@@ -21,7 +21,7 @@ jobs:
           source .github/workflows/utils.sh
           alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
           echo $alpine_arm_sha
-          kolibri_arm_sha=$(get_manifest_sha "$repo:latest" "arm")
+          kolibri_arm_sha=$(get_manifest_sha $repo:latest arm)
           echo $kolibri_arm_sha
           flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "$repo@"$kolibri_arm_sha)
           echo $flag_arm
