@@ -7,7 +7,7 @@ on:
     types: kolibri
 
 jobs:
-  build:
+  kolibri:
     runs-on: ubuntu-20.04
     steps:
       - name: checkout code
@@ -17,8 +17,13 @@ jobs:
       - name: neethumohan1212 kolibri
         run: |
           export DOCKER_CLI_EXPERIMENTAL=enabled
+<<<<<<< HEAD
           repo="neethumohan1212/kolibri"
           source utils.sh
+=======
+          repo="treehouses/kolibri"
+          source .github/workflows/utils.sh
+>>>>>>> 87c6aba6daf7468919711502bd06674d6515d861
           alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
           echo $alpine_arm_sha
           kolibri_arm_sha=$(get_manifest_sha "$repo:latest" "arm")
@@ -37,21 +42,21 @@ jobs:
           echo $kolibri_arm64_sha
           flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "$repo@"$kolibri_arm64_sha)
           echo $flag_arm64
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          build_image "treehouses/alpine:latest" arm "$repo" $flag_arm
-          build_image "treehouses/alpine:latest" amd64 "$repo" $flag_amd64
-          build_image "treehouses/alpine:latest" arm64 "$repo" $flag_arm64
           flag=$(change $flag_arm $flag_arm64 $flag_amd64)
           #flag="true"
           echo $flag
-          tag1="latest"
-          tag2="$(date +%Y%m%d%H%M)"
-          echo $tag2
-          docker manifest create $repo:$tag1 $repo-tags:amd64 $repo-tags:arm $repo-tags:arm64
-          docker manifest create $repo:$tag2 $repo-tags:amd64 $repo-tags:arm $repo-tags:arm64
-          docker manifest inspect $repo:$tag1
-          docker manifest inspect $repo:$tag2
           if [[ $flag == true ]]; then
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            build_image "treehouses/alpine:latest" arm "$repo" $flag_arm
+            build_image "treehouses/alpine:latest" amd64 "$repo" $flag_amd64
+            build_image "treehouses/alpine:latest" arm64 "$repo" $flag_arm64
+            tag1="latest"
+            tag2="$(date +%Y%m%d%H%M)"
+            echo $tag2
+            docker manifest create $repo:$tag1 $repo-tags:amd64 $repo-tags:arm $repo-tags:arm64
+            docker manifest create $repo:$tag2 $repo-tags:amd64 $repo-tags:arm $repo-tags:arm64
+            docker manifest inspect $repo:$tag1
+            docker manifest inspect $repo:$tag2
             docker manifest push $repo:$tag1; docker manifest push $repo:$tag2
           else
             echo "no changes"
