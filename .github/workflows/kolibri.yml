@@ -39,9 +39,9 @@ jobs:
           flag_arm64=$(is_base "neethumohan1212/alpine@"$alpine_arm64_sha "neethumohan1212 kolibri@"$kolibri_arm64_sha)
           echo $flag_arm64
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-          build_image "neethumohan1212/alpine:latest" arm "neethumohan1212 kolibri" $flag_arm
-          build_image "neethumohan1212/alpine:latest" amd64 "neethumohan1212 kolibri" $flag_amd64
-          build_image "neethumohan1212/alpine:latest" arm64 "neethumohan1212 kolibri" $flag_arm64
+          build_image "neethumohan1212/alpine:latest" arm "neethumohan1212/kolibri" $flag_arm
+          build_image "neethumohan1212/alpine:latest" amd64 "neethumohan1212/kolibri" $flag_amd64
+          build_image "neethumohan1212/alpine:latest" arm64 "neethumohan1212/kolibri" $flag_arm64
           flag=$(change $flag_arm $flag_arm64 $flag_amd64)
           flag="true"
           echo $flag
