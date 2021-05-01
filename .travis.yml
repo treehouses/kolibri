@@ -11,45 +11,45 @@ script:
 - source utils.sh
 - alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
 - echo $alpine_arm_sha
-- kolibri_arm_sha=$(get_manifest_sha "neethumohan1212/kolibri:latest" "arm")
+- kolibri_arm_sha=$(get_manifest_sha "treehouses/kolibri:latest" "arm")
 - echo $kolibri_arm_sha
-- flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "neethumohan1212/kolibri@"$kolibri_arm_sha)
+- flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "treehouses/kolibri@"$kolibri_arm_sha)
 - echo $flag_arm
 - alpine_amd64_sha=$(get_manifest_sha "treehouses/alpine:latest" "amd64")
 - echo $alpine_amd64_sha
-- kolibri_amd64_sha=$(get_manifest_sha "neethumohan1212/kolibri:latest" "amd64")
+- kolibri_amd64_sha=$(get_manifest_sha "treehouses/kolibri:latest" "amd64")
 - echo $kolibri_amd64_sha
-- flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "neethumohan1212/kolibri@"$kolibri_amd64_sha)
+- flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "treehouses/kolibri@"$kolibri_amd64_sha)
 - echo $flag_amd64
 - alpine_arm64_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm64")
 - echo $alpine_arm64_sha
-- kolibri_arm64_sha=$(get_manifest_sha "neethumohan1212/kolibri:latest" "arm64")
+- kolibri_arm64_sha=$(get_manifest_sha "treehouses/kolibri:latest" "arm64")
 - echo $kolibri_arm64_sha
-- flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "neethumohan1212/kolibri@"$kolibri_arm64_sha)
+- flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "treehouses/kolibri@"$kolibri_arm64_sha)
 - echo $flag_arm64
-- echo $DOCKERAPIKEY | docker login -u "neethumohan1212" --password-stdin
+- echo $DOCKERAPIKEY | docker login -u "treehouses" --password-stdin
 - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-- build_image "treehouses/alpine:latest" arm "neethumohan1212/kolibri" $flag_arm
-- build_image "treehouses/alpine:latest" amd64 "neethumohan1212/kolibri" $flag_amd64
-- build_image "treehouses/alpine:latest" arm64 "neethumohan1212/kolibri" $flag_arm64
+- build_image "treehouses/alpine:latest" arm "treehouses/kolibri" $flag_arm
+- build_image "treehouses/alpine:latest" amd64 "treehouses/kolibri" $flag_amd64
+- build_image "treehouses/alpine:latest" arm64 "treehouses/kolibri" $flag_arm64
 - flag=$(change $flag_arm $flag_arm64 $flag_amd64)
 - flag="true"
 - echo $flag
 before_deploy:
-- deploy_image "neethumohan1212/kolibri" arm
-- deploy_image "neethumohan1212/kolibri" amd64
-- deploy_image "neethumohan1212/kolibri" arm64
+- deploy_image "treehouses/kolibri" arm
+- deploy_image "treehouses/kolibri" amd64
+- deploy_image "treehouses/kolibri" arm64
 - tag1="latest"
 - tag2=$(date +%Y%m%d%H%M)
 - echo $tag2
-- create_manifest neethumohan1212/kolibri $tag1 $tag2 neethumohan1212/kolibri-tags:amd64
-  neethumohan1212/kolibri-tags:arm neethumohan1212/kolibri-tags:arm64
-- docker manifest inspect neethumohan1212/kolibri:$tag1
-- docker manifest inspect neethumohan1212/kolibri:$tag2
+- create_manifest treehouses/kolibri $tag1 $tag2 treehouses/kolibri-tags:amd64
+  treehouses/kolibri-tags:arm treehouses/kolibri-tags:arm64
+- docker manifest inspect treehouses/kolibri:$tag1
+- docker manifest inspect treehouses/kolibri:$tag2
 deploy:
 - provider: script
-  script: docker manifest push neethumohan1212/kolibri:$tag1; docker manifest push
-    neethumohan1212/kolibri:$tag2
+  script: docker manifest push treehouses/kolibri:$tag1; docker manifest push
+    treehouses/kolibri:$tag2
   skip_cleanup: true
   on:
     all_branches: true
