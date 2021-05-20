@@ -2,7 +2,6 @@ name: kolibri-docker-image-build
 
 on:
   push:
-  workflow_dispatch:
   repository_dispatch:
     types: kolibri
 
