@@ -1,8 +1,8 @@
-FROM alpine:latest
+FROM {{base_image}}
 
 #install python
 RUN apk update && apk add \
-    python \
+    python3 \
     curl
 
 #no need to add cleaning command as alpine cleans package automatically
@@ -21,4 +21,4 @@ RUN mkdir /root/.kolibri
 
 EXPOSE 8080
 
-CMD ./kolibri start && tail -f /root/.kolibri/logs/kolibri.txt
+CMD python3 ./kolibri start && tail -f /root/.kolibri/logs/kolibri.txt

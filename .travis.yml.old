@@ -1,0 +1,59 @@
+sudo: required
+addons:
+  apt:
+    update: true
+    packages:
+    - docker-ce
+services:
+- docker
+script:
+- export DOCKER_CLI_EXPERIMENTAL=enabled
+- source utils.sh
+- alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
+- echo $alpine_arm_sha
+- kolibri_arm_sha=$(get_manifest_sha "treehouses/kolibri:latest" "arm")
+- echo $kolibri_arm_sha
+- flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "treehouses/kolibri@"$kolibri_arm_sha)
+- echo $flag_arm
+- alpine_amd64_sha=$(get_manifest_sha "treehouses/alpine:latest" "amd64")
+- echo $alpine_amd64_sha
+- kolibri_amd64_sha=$(get_manifest_sha "treehouses/kolibri:latest" "amd64")
+- echo $kolibri_amd64_sha
+- flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "treehouses/kolibri@"$kolibri_amd64_sha)
+- echo $flag_amd64
+- alpine_arm64_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm64")
+- echo $alpine_arm64_sha
+- kolibri_arm64_sha=$(get_manifest_sha "treehouses/kolibri:latest" "arm64")
+- echo $kolibri_arm64_sha
+- flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "treehouses/kolibri@"$kolibri_arm64_sha)
+- echo $flag_arm64
+- echo $DOCKERAPIKEY | docker login -u "treehouses" --password-stdin
+- docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+- build_image "treehouses/alpine:latest" arm "treehouses/kolibri" $flag_arm
+- build_image "treehouses/alpine:latest" amd64 "treehouses/kolibri" $flag_amd64
+- build_image "treehouses/alpine:latest" arm64 "treehouses/kolibri" $flag_arm64
+- flag=$(change $flag_arm $flag_arm64 $flag_amd64)
+- flag="true"
+- echo $flag
+before_deploy:
+- deploy_image "treehouses/kolibri" arm
+- deploy_image "treehouses/kolibri" amd64
+- deploy_image "treehouses/kolibri" arm64
+- tag1="latest"
+- tag2=$(date +%Y%m%d%H%M)
+- echo $tag2
+- create_manifest treehouses/kolibri $tag1 $tag2 treehouses/kolibri-tags:amd64
+  treehouses/kolibri-tags:arm treehouses/kolibri-tags:arm64
+- docker manifest inspect treehouses/kolibri:$tag1
+- docker manifest inspect treehouses/kolibri:$tag2
+deploy:
+- provider: script
+  script: docker manifest push treehouses/kolibri:$tag1; docker manifest push
+    treehouses/kolibri:$tag2
+  skip_cleanup: true
+  on:
+    all_branches: true
+    condition: "$flag = true"
+env:
+  global:
+  - secure: QYa0ylNHvZQovle8c4+cR4i23tZ6NUaf/iYepLpuxKt3fRTvLRdDQs0tPgfTUVQtkQqYaNM/J6n+LaML+Wc5blBiKafUd8wDYUIfIKwguYBwNFZwYEy2WfaVSj4sNgPXaOc4iu7Im5pi6eeXmjSINuG2/eOVVQEtz6ST/WvIbA6Jr4oZ68P6b8H2VJxMd2RTAVG6BH+2BaeBy/l/hAGAk97mo1Ji1UIXPnC3pTM1ZDDEHPog24j0OziAkKOdKdBY9FXWeWKTISZOGcjVW8PN6RRMuENGw6+yPNhk7A8IQTvk1B23gvtCH81N8M5Igu7MfFZHg2+mHkvYVwHeVvQXJdBNUq4Bv0wQn66Buqo8+Je9jGtWyUZzy7xyFQA47BWfwKGqqTAqTOdlYruaak7UqhwQLMeX5terKy5nfgw4gJ8JYqk5KL3HnTym4yNXc2DhZgVOWuh5sqET+JN2+xA72QjWyIkP/RCIzZDHbPYqQjLlKwqdviYJFdJeeRpPnKDS1eeRojd0WL3y42ACdFDxndN2LQ2umQL+HOtomZB+gVRjrbuSbyecbDEVxRjifQYzJthRtmzCUReUmZE9FB9xxRjV/0+Enfr2tZJmXn+C1reTDZp+kvy9pdbWcBW9FDRGLHCubeloHKT05b7PpyM0RRfNGQIgpDTcAxMT1FbfnjI=

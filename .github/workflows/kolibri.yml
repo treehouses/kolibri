@@ -1,0 +1,59 @@
+name: kolibri-docker-image-build
+
+on:
+  push:
+  workflow_dispatch:
+  repository_dispatch:
+    types: kolibri
+
+jobs:
+  kolibri:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: docker login
+        run: docker login -u ${{ secrets.DOCKERUSERNAME }} -p ${{ secrets.DOCKERAPIKEY }}
+      - name: neethumohan1212 kolibri
+        run: |
+          export DOCKER_CLI_EXPERIMENTAL=enabled
+          repo="neethumohan1212/kolibri"
+          source .github/workflows/utils.sh
+          alpine_arm_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm")
+          echo $alpine_arm_sha
+          kolibri_arm_sha=$(get_manifest_sha $repo:latest arm)
+          echo $kolibri_arm_sha
+          flag_arm=$(is_base "treehouses/alpine@"$alpine_arm_sha "$repo@"$kolibri_arm_sha)
+          echo $flag_arm
+          alpine_amd64_sha=$(get_manifest_sha "treehouses/alpine:latest" "amd64")
+          echo $alpine_amd64_sha
+          kolibri_amd64_sha=$(get_manifest_sha "$repo:latest" "amd64")
+          echo $kolibri_amd64_sha
+          flag_amd64=$(is_base "treehouses/alpine@"$alpine_amd64_sha "neethumohan1212/kolibri@"$kolibri_amd64_sha)
+          echo $flag_amd64
+          alpine_arm64_sha=$(get_manifest_sha "treehouses/alpine:latest" "arm64")
+          echo $alpine_arm64_sha
+          kolibri_arm64_sha=$(get_manifest_sha "$repo:latest" "arm64")
+          echo $kolibri_arm64_sha
+          flag_arm64=$(is_base "treehouses/alpine@"$alpine_arm64_sha "$repo@"$kolibri_arm64_sha)
+          echo $flag_arm64
+          flag=$(change $flag_arm $flag_arm64 $flag_amd64)
+          #flag="true"
+          echo $flag
+          if [[ $flag == true ]]; then
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            build_image "treehouses/alpine:latest" arm "$repo" $flag_arm
+            build_image "treehouses/alpine:latest" amd64 "$repo" $flag_amd64
+            build_image "treehouses/alpine:latest" arm64 "$repo" $flag_arm64
+            tag1="latest"
+            tag2="$(date +%Y%m%d%H%M)"
+            echo $tag2
+            docker manifest create $repo:$tag1 $repo-tags:amd64 $repo-tags:arm $repo-tags:arm64
+            docker manifest create $repo:$tag2 $repo-tags:amd64 $repo-tags:arm $repo-tags:arm64
+            docker manifest inspect $repo:$tag1
+            docker manifest inspect $repo:$tag2
+            docker manifest push $repo:$tag1; docker manifest push $repo:$tag2
+          else
+            echo "no changes"
+          fi
+
